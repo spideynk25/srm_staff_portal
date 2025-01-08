@@ -2,10 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:srm_staff_portal/features/auth/data/login_hive_service.dart';
 import 'package:srm_staff_portal/features/auth/data/login_service.dart';
-import 'package:srm_staff_portal/features/auth/domain/entities/home_quick_access_data.dart';
 import 'package:srm_staff_portal/features/auth/domain/entities/login_data.dart';
-import 'package:srm_staff_portal/features/auth/domain/repos/home_quick_access_provider.dart';
 import 'package:srm_staff_portal/features/auth/domain/repos/login_data_provider.dart';
 import 'package:srm_staff_portal/features/home/presentation/pages/home_page.dart';
 import 'package:srm_staff_portal/main.dart';
@@ -41,6 +40,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final password = pwdController.text.trim();
 
     try {
+      final loginHiveService = LoginHiveService();
       final loginService = LoginService();
       final encryption = ref.read(encryptionProvider.notifier);
       final response = await loginService.login(
@@ -48,14 +48,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         password: password,
         encryptionProvider: encryption,
       );
-      final loginData = LoginData.fromJson(response!);
-      ref.read(loginDataProvider.notifier).setLoginData(loginData);
-      log("page eid ${response["eid"]}");
-      final response2 = await loginService.dashBoardData(eid: response["eid"], encryptionProvider: encryption);
-      log("$response2");
-      final homeQuickAccessData = HomeQuickAccessData.fromJsonList(response2!);
-      ref.read(homeQuickAccessProvider.notifier).setHomeQuickAccessData(homeQuickAccessData);
+      
+      if(response == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          CustomSnackbar.show(title: 'Invalid username or password')
+        );
+        return;
+      }
       if (response.isNotEmpty) {
+        final loginData = LoginData.fromJson(response);
+        loginHiveService.saveLoginData(loginData); 
+        ref.read(loginDataProvider.notifier).setLoginData(loginData);
+      log("page eid ${response["eid"]}");
         ScaffoldMessenger.of(context).showSnackBar(
           CustomSnackbar.show(title: "Login Successful"),
         );

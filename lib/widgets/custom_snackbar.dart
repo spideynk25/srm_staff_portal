@@ -18,7 +18,7 @@ class CustomSnackbar {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      margin: const EdgeInsets.all(70),
+      margin: const EdgeInsets.all(50),
       duration: const Duration(seconds: 3),
     );
   }

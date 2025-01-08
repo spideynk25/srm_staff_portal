@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:srm_staff_portal/features/auth/data/login_hive_service.dart';
+import 'package:srm_staff_portal/features/auth/domain/entities/login_data.dart';
+import 'package:srm_staff_portal/features/auth/domain/repos/login_data_provider.dart';
 import 'package:srm_staff_portal/features/home/presentation/pages/explore_page.dart';
 import 'package:srm_staff_portal/features/home/presentation/pages/home_quick_access_page.dart';
 import 'package:srm_staff_portal/features/home/presentation/pages/search_page.dart';
@@ -16,6 +19,15 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   int _selectedIndex = 0;
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     LoginData? loginData = LoginHiveService().getLoginData();
+  //     ref.read(loginDataProvider.notifier).setLoginData(loginData!);
+  //   });
+  // }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -26,7 +38,9 @@ class _HomePageState extends ConsumerState<HomePage> {
     HomeQuickAccessPage(),
     const ExplorePage(),
     const SearchPage(),
-    const ProfilePage(isDrawer: true,),
+    const ProfilePage(
+      isDrawer: true,
+    ),
     const SettingsPage()
   ];
 
@@ -36,7 +50,6 @@ class _HomePageState extends ConsumerState<HomePage> {
       backgroundColor: const Color.fromARGB(255, 243, 239, 239),
       body: _pages[_selectedIndex],
       bottomNavigationBar: Container(
-        
         decoration: BoxDecoration(
           //color: Colors.white,
           gradient: const LinearGradient(

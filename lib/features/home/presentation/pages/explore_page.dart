@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:srm_staff_portal/features/academic/presentation/pages/academic_page.dart';
+import 'package:srm_staff_portal/features/auth/data/login_hive_service.dart';
 import 'package:srm_staff_portal/features/auth/presentation/pages/login_page.dart';
 import 'package:srm_staff_portal/features/book_search/presentation/pages/book_search_page.dart';
 import 'package:srm_staff_portal/features/calender/presentation/pages/calender_page.dart';
@@ -27,7 +28,11 @@ class ExplorePage extends StatelessWidget {
       "6": ["MIS Reports", "assets/icons/icon_dashboard.png", () => Navigator.push(context, MaterialPageRoute(builder: (context) => MISReportsPage()))],
       "7": ["Calendar", "assets/icons/icon_calendar.png", () => Navigator.push(context, MaterialPageRoute(builder: (context) => const CalenderPage()))],
       "8": ["Book Search", "assets/icons/icon_book_search.png", () => Navigator.push(context, MaterialPageRoute(builder: (context) => const BookSearchPage()))],
-      "9": ["Logout", "assets/icons/icon_logout.jpg", () => Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()))],
+      "9": ["Logout", "assets/icons/icon_logout.jpg", (){
+          final loginHiveService = LoginHiveService();
+          loginHiveService.clearLoginData(); 
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+        }],
     };
 
     return Scaffold(

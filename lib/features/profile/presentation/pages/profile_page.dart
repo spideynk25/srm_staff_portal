@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:srm_staff_portal/features/auth/data/login_hive_service.dart';
 import 'package:srm_staff_portal/features/auth/domain/repos/login_data_provider.dart';
 import 'package:srm_staff_portal/features/leave/presentation/components/detailed_row.dart';
 import 'package:srm_staff_portal/features/profile/data/profile_service.dart';
@@ -29,10 +31,19 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     });
     _fetchProfileData();
   }
-
+  final loginHiveService = LoginHiveService();
   Future<void> _fetchProfileData() async {
+    //final eid = loginHiveService.getLoginData()?.eid;
+    final eid = ref.watch(loginDataProvider)?.eid;
+     if (eid == null) {
+      log("Error: User is not logged in.");
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    }
     final encryption = ref.read(encryptionProvider.notifier);
-    final eid = ref.watch(loginDataProvider)!.eid;
+    
     final profileService = ProfileService();
 
     try {
@@ -41,6 +52,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         encryptionProvider: encryption,
       );
       print(data);
+
+      
       setState(() {
         profileData = data;
         isLoading = false;
@@ -118,7 +131,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: profileImage == null
+                        child: profileImage!.isEmpty 
                             ? Container(
                                 width: 130,
                                 height: 130,

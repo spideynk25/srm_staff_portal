@@ -12,25 +12,28 @@ class CreateAssignmentPage extends ConsumerStatefulWidget {
 }
 
 class _CreateAssignmentPageState extends ConsumerState<CreateAssignmentPage> {
-late WebViewController controller;
- @override
-  void initState() {
-    super.initState();
-    WidgetsFlutterBinding.ensureInitialized();
-    controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse(
-          "http://115.96.66.234/evarsityamjain/lms/transaction/LMSIndexforMobile.jsp?EmployeeId=${ref.watch(loginDataProvider)!.eid}"));
+  late WebViewController controller;
+  bool isInitialized = false; 
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!isInitialized) {
+      final eid = ref.read(loginDataProvider)?.eid ?? ''; // Use ref.read()
+      controller = WebViewController()
+        ..setJavaScriptMode(JavaScriptMode.unrestricted)
+        ..loadRequest(Uri.parse(
+            "http://115.96.66.234/evarsityamjain/lms/transaction/LMSIndexforMobile.jsp?EmployeeId=$eid"));
+      isInitialized = true;
+    }
   }
+
   @override
   Widget build(BuildContext context) {
-    //final eid = ref.watch(loginDataProvider)!.eid;
-    final isLoading = ValueNotifier<bool>(true);
-
     return Scaffold(
       appBar: const CustomAppBar(title: 'Create Assignment'),
       backgroundColor: const Color.fromARGB(255, 243, 239, 239),
-       body: WebViewWidget(controller: controller),
+      body: WebViewWidget(controller: controller),
     );
   }
 }

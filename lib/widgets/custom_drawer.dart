@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:srm_staff_portal/app_meta_data.dart';
+import 'package:srm_staff_portal/features/auth/data/login_hive_service.dart';
 import 'package:srm_staff_portal/features/auth/domain/repos/login_data_provider.dart';
 import 'package:srm_staff_portal/features/auth/presentation/pages/login_page.dart';
 import 'package:srm_staff_portal/features/profile/presentation/pages/profile_page.dart';
@@ -149,11 +150,15 @@ class CustomDrawer extends ConsumerWidget {
             context,
             "Logout",
             "assets/icons/icon_logout.jpg",
-            () => Navigator.push(
+            () {
+              final loginHiveService = LoginHiveService();
+              loginHiveService.clearLoginData();              
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => LoginPage(),
-                )),
+                ));
+            }
           ),
         ],
       ),

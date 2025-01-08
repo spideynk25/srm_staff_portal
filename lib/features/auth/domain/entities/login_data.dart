@@ -1,10 +1,28 @@
+import 'package:hive/hive.dart';
+
+part 'login_data.g.dart'; 
+
+@HiveType(typeId: 0) 
 class LoginData {
+  @HiveField(0)
   final String eid;
+
+  @HiveField(1)
   final String officeId;
+
+  @HiveField(2)
   final String designation;
+
+  @HiveField(3)
   final String department;
+
+  @HiveField(4)
   final List<String> menuIds;
+
+  @HiveField(5)
   final String employeeId;
+
+  @HiveField(6)
   final String employeeName;
 
   LoginData({
@@ -17,7 +35,6 @@ class LoginData {
     required this.employeeName,
   });
 
-  
   static List<String> refactorMenuIds(String str) {
     return str
         .split(",")

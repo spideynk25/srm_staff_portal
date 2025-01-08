@@ -7,7 +7,6 @@ import 'package:srm_staff_portal/features/auth/domain/repos/login_data_provider.
 import 'package:srm_staff_portal/main.dart';
 import 'package:srm_staff_portal/widgets/custom_app_bar.dart';
 
-
 class AssignmentPage extends ConsumerStatefulWidget {
   final int breakupId;
   final String title;

@@ -130,14 +130,18 @@ class _TopFacultiesInBarChartPageState
                                                 topFacultiesInBarChartData!
                                                     .length) {
                                               return SideTitleWidget(
-                                                axisSide: meta.axisSide,
+                                                meta: meta,
+                      
+
                                                 child: Text(
                                                   topFacultiesInBarChartData![
                                                               value.toInt()]
                                                           ['employeename']
                                                       .split('-')[0]
                                                       .toString()
-                                                      .replaceAll(" ", "\n"),
+                                                      .split(" ")[0]
+                                                      
+                                                     ,
                                                   style: const TextStyle(
                                                       fontSize: 10),
                                                   textAlign: TextAlign.center,
@@ -223,8 +227,7 @@ class _TopFacultiesInBarChartPageState
                               (employee) {
                                 final employeename = employee['employeename'];
                                 final total = employee['total'] as double;
-                                final color =
-                                    pieChartColors[employeename];
+                                final color = pieChartColors[employeename];
 
                                 return Padding(
                                   padding: const EdgeInsets.only(bottom: 8.0),

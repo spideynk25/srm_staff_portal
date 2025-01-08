@@ -33,8 +33,8 @@ class Baseurl {
         headers: headers,
         body: utf8.encode(body),
       );
-      log("${response.statusCode}");
-      log(response.body);
+      // log("${response.statusCode}");
+      // log(response.body);
 
       if (response.statusCode == 200) {
         final xmlResponse = response.body;
@@ -43,10 +43,10 @@ class Baseurl {
         final startIndex = xmlResponse.indexOf(startTag) + startTag.length;
         final endIndex = xmlResponse.indexOf(endTag);
         final data = xmlResponse.substring(startIndex, endIndex);
-        log("data: $data");
+       // log("data: $data");
         final str1 = encryptionProvider.getDecryptedData(data);
-        log("str${str1.stringData}");
-        log("map ${str1.mapData}");
+        // log("str${str1.stringData}");
+        // log("map ${str1.mapData}");
         return str1;
       }
     } catch (e) {
